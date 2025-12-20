@@ -12,20 +12,22 @@ The data types used by the web app are documented in [fcm_format.txt].
 
 ## Web interface (Gradio)
 
-You can run a simple local web app for converting FCM files to SVG:
+You can run a simple local web app for converting FCM files to SVG using a Python 3.11.9 virtual environment:
 
 ```bash
-pipenv install
-pipenv run python gradio_app.py
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+python gradio_app.py
 ```
 
-On Windows you can launch the app directly with automatic browser opening:
+On Windows you can launch the app (and open it automatically in your browser) with:
 
 ```
 run_gradio.bat
 ```
 
-The app opens in your default browser via `demo.launch(inbrowser=True)`. Upload an FCM file to see the SVG preview and download both the SVG and the embedded thumbnail (`.bmp`).
+The batch script activates the `venv`, runs the app, and deactivates the environment when the process ends. The app opens in your default browser via `demo.launch(inbrowser=True)`. Upload an FCM file to see the SVG preview and download both the SVG and the embedded thumbnail (`.bmp`).
 
 ## Roadmap
 
