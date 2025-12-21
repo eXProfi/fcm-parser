@@ -69,11 +69,12 @@ with gr.Blocks(title="FCM → SVG") as demo:
             convert_button = gr.Button("Convert & Download SVG", variant="primary")
             gr.Markdown("Click to convert your upload and automatically trigger the SVG download.")
 
-    download_button = gr.DownloadButton(label="", value=None, visible=False, elem_id="download-svg-btn")
+    download_button = gr.DownloadButton(label="", value=None, visible=True, elem_id="download-svg-btn")
     gr.HTML(
         """
         <style>
-        #download-svg-btn { display: none !important; }
+        #download-svg-btn { display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important; }
+        #download-svg-btn + div { display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important; }
         </style>
         <script>
         (() => {
