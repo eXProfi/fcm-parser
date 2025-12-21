@@ -26,7 +26,7 @@ def _fcm_bytes_to_files(fcm_bytes: bytes, stem: str) -> tuple[str, str]:
 def convert_fcm(file_obj):
     """Gradio callback to convert an uploaded FCM file to SVG."""
     if file_obj is None:
-        raise gr.Error("Пожалуйста, загрузите FCM файл.")
+        raise gr.Error("Please upload an FCM file before converting.")
 
     try:
         stem_source = getattr(file_obj, "name", file_obj)
@@ -44,29 +44,40 @@ def convert_fcm(file_obj):
             f"{svg_preview}"
             "</div>"
         )
-        return preview_html, svg_path, thumbnail_path
+        download_update = gr.DownloadButton.update(value=svg_path, visible=True)
+        return preview_html, download_update, thumbnail_path
     except Exception as exc:  # pragma: no cover - surfaced to UI
-        raise gr.Error(f"Не удалось конвертировать файл: {exc}")
+        raise gr.Error(f"Could not convert the file: {exc}")
 
 
 with gr.Blocks(title="FCM → SVG") as demo:
     gr.Markdown(
         """
-        # Конвертер FCM → SVG
+        # FCM → SVG Converter
 
-        Загрузите файл формата FCM, чтобы получить SVG и встроенный превью.
+        Upload an FCM file to create an SVG preview and downloadable outputs.
         """
     )
 
     with gr.Row():
-        fcm_input = gr.File(label="FCM файл", file_types=[".fcm"])
-        convert_button = gr.Button("Конвертировать")
+        with gr.Column():
+            fcm_input = gr.File(label="FCM file", file_types=[".fcm"])
+            gr.Markdown("Upload your FCM (.fcm) design file here before starting conversion.")
 
-    svg_preview = gr.HTML(label="SVG превью")
-    svg_file = gr.File(label="Скачать SVG")
-    thumbnail_file = gr.File(label="Скачать миниатюру BMP")
+        with gr.Column():
+            convert_button = gr.Button("Convert")
+            gr.Markdown("Click **Convert** after uploading to generate the SVG and preview.")
 
-    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, svg_file, thumbnail_file])
+    gr.Markdown("## Preview")
+    gr.Markdown("Review the generated SVG. Scroll to inspect the full design before downloading.")
+    svg_preview = gr.HTML(label="SVG preview")
+
+    gr.Markdown("## Downloads")
+    gr.Markdown("Download the converted SVG or the BMP thumbnail created from your FCM file.")
+    download_svg = gr.DownloadButton(label="Download SVG", value=None, visible=False)
+    thumbnail_file = gr.File(label="Download BMP thumbnail")
+
+    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, download_svg, thumbnail_file])
 
 
 if __name__ == "__main__":
