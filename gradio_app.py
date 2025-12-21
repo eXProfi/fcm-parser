@@ -66,16 +66,13 @@ with gr.Blocks(title="FCM → SVG") as demo:
             fcm_input = gr.File(label="FCM file", file_types=[".fcm"])
 
         with gr.Column():
-            convert_button = gr.Button("Convert & Download SVG")
-            gr.Markdown("Click to convert your upload and immediately get the SVG download link.")
-
-    gr.Markdown("## Downloads — Download the converted SVG created from your FCM file.")
-    download_svg = gr.File(label="SVG file", type="filepath", visible=False)
+            convert_button = gr.DownloadButton("Convert & Download SVG", value=None, visible=True)
+            gr.Markdown("Click to convert your upload and immediately receive the SVG download prompt.")
 
     gr.Markdown("## Preview — Review the generated SVG at a scaled 1000×1000 preview before downloading.")
     svg_preview = gr.HTML(label="SVG preview")
 
-    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, download_svg])
+    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, convert_button])
 
 
 if __name__ == "__main__":
