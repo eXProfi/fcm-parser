@@ -40,7 +40,7 @@ def convert_fcm(file_obj):
         svg_path, thumbnail_path = _fcm_bytes_to_files(fcm_bytes, stem)
         svg_preview = Path(svg_path).read_text(encoding="utf-8")
         preview_html = (
-            '<div style="max-height: 640px; overflow: auto; border: 1px solid #ddd; padding: 8px;">'
+            '<div style="max-height: 600px; max-width: 600px; overflow: auto; border: 1px solid #ddd; padding: 8px;">'
             f"{svg_preview}"
             "</div>"
         )
@@ -68,14 +68,14 @@ with gr.Blocks(title="FCM → SVG") as demo:
             convert_button = gr.Button("Convert")
             gr.Markdown("Click **Convert** after uploading to generate the SVG and preview.")
 
-    gr.Markdown("## Preview")
-    gr.Markdown("Review the generated SVG. Scroll to inspect the full design before downloading.")
-    svg_preview = gr.HTML(label="SVG preview")
-
     gr.Markdown("## Downloads")
     gr.Markdown("Download the converted SVG or the BMP thumbnail created from your FCM file.")
     download_svg = gr.DownloadButton(label="Download SVG", value=None, visible=False)
     thumbnail_file = gr.File(label="Download BMP thumbnail")
+
+    gr.Markdown("## Preview")
+    gr.Markdown("Review the generated SVG. Scroll to inspect up to a 600×600 view of the design before downloading.")
+    svg_preview = gr.HTML(label="SVG preview")
 
     convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, download_svg, thumbnail_file])
 
