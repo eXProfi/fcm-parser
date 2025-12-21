@@ -66,40 +66,11 @@ with gr.Blocks(title="FCM → SVG") as demo:
             fcm_input = gr.File(label="FCM file", file_types=[".fcm"])
 
         with gr.Column():
-            convert_button = gr.Button("Convert & Download SVG", variant="primary")
-            gr.Markdown("Click to convert your upload and automatically trigger the SVG download.")
+            gr.Markdown("Press **Convert** to generate the SVG, then click **Download SVG** when it's ready.")
 
-    download_button = gr.DownloadButton(label="", value=None, visible=True, elem_id="download-svg-btn")
-    gr.HTML(
-        """
-        <style>
-        #download-svg-btn { display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important; }
-        #download-svg-btn + div { display: none !important; width: 0 !important; height: 0 !important; padding: 0 !important; margin: 0 !important; }
-        </style>
-        <script>
-        (() => {
-          const waitForButton = () => {
-            const btn = document.getElementById('download-svg-btn');
-            if (!btn) {
-              requestAnimationFrame(waitForButton);
-              return;
-            }
-            let lastHref = btn.getAttribute('href') || '';
-            const observer = new MutationObserver(() => {
-              const href = btn.getAttribute('href') || '';
-              if (href && href !== lastHref) {
-                lastHref = href;
-                setTimeout(() => btn.click(), 50);
-              }
-            });
-            observer.observe(btn, { attributes: true, attributeFilter: ['href'] });
-          };
-          waitForButton();
-        })();
-        </script>
-        """,
-        visible=False,
-    )
+    with gr.Row():
+        convert_button = gr.Button("Convert", variant="primary")
+        download_button = gr.DownloadButton(label="Download SVG", value=None, visible=False)
 
     gr.Markdown("## Preview — Review the generated SVG at a scaled 1000×1000 preview before downloading.")
     svg_preview = gr.HTML(label="SVG preview")
