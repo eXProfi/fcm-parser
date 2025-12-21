@@ -57,7 +57,7 @@ def convert_fcm(file_obj):
 with gr.Blocks(title="FCM → SVG") as demo:
     gr.Markdown(
         "# FCM → SVG Converter — "
-        "<span style='font-size: 0.9em;'>Upload an FCM file to create an SVG preview and downloadable outputs.</span>"
+        "<span style='font-size: 0.9em; color: #555;'>Upload an FCM file to create an SVG preview and downloadable outputs.</span>"
     )
 
     with gr.Row():
@@ -65,13 +65,20 @@ with gr.Blocks(title="FCM → SVG") as demo:
             fcm_input = gr.File(label="FCM file", file_types=[".fcm"])
 
         with gr.Column():
-            convert_button = gr.DownloadButton("Convert & Download SVG", value=None, visible=True)
-            gr.Markdown("Click to convert your upload and immediately receive the SVG download prompt.")
+            convert_button = gr.Button("Convert & Download SVG", variant="primary")
+            gr.Markdown("Click to convert your upload and automatically trigger the SVG download.")
+
+    download_button = gr.DownloadButton(label="Download SVG", value=None, visible=False, elem_id="download-svg-btn")
 
     gr.Markdown("## Preview — Review the generated SVG at a scaled 1000×1000 preview before downloading.")
     svg_preview = gr.HTML(label="SVG preview")
 
-    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, convert_button])
+    convert_button.click(
+        convert_fcm,
+        inputs=fcm_input,
+        outputs=[svg_preview, download_button],
+        _js="(preview, file) => { setTimeout(() => { const btn = document.getElementById('download-svg-btn'); if (btn) { btn.click(); } }, 50); return [preview, file]; }",
+    )
 
 
 if __name__ == "__main__":
