@@ -49,7 +49,8 @@ def convert_fcm(file_obj):
             f"{svg_preview}"
             "</div>"
         )
-        return preview_html, svg_path
+        download_update = gr.update(value=svg_path, visible=True)
+        return preview_html, download_update
     except Exception as exc:  # pragma: no cover - surfaced to UI
         raise gr.Error(f"Could not convert the file: {exc}")
 
@@ -69,16 +70,37 @@ with gr.Blocks(title="FCM → SVG") as demo:
             gr.Markdown("Click to convert your upload and automatically trigger the SVG download.")
 
     download_button = gr.DownloadButton(label="Download SVG", value=None, visible=False, elem_id="download-svg-btn")
+    gr.HTML(
+        """
+        <script>
+        (() => {
+          const waitForButton = () => {
+            const btn = document.getElementById('download-svg-btn');
+            if (!btn) {
+              requestAnimationFrame(waitForButton);
+              return;
+            }
+            let lastHref = btn.getAttribute('href') || '';
+            const observer = new MutationObserver(() => {
+              const href = btn.getAttribute('href') || '';
+              if (href && href !== lastHref) {
+                lastHref = href;
+                setTimeout(() => btn.click(), 50);
+              }
+            });
+            observer.observe(btn, { attributes: true, attributeFilter: ['href'] });
+          };
+          waitForButton();
+        })();
+        </script>
+        """,
+        visible=False,
+    )
 
     gr.Markdown("## Preview — Review the generated SVG at a scaled 1000×1000 preview before downloading.")
     svg_preview = gr.HTML(label="SVG preview")
 
-    convert_button.click(
-        convert_fcm,
-        inputs=fcm_input,
-        outputs=[svg_preview, download_button],
-        _js="(preview, file) => { setTimeout(() => { const btn = document.getElementById('download-svg-btn'); if (btn) { btn.click(); } }, 50); return [preview, file]; }",
-    )
+    convert_button.click(convert_fcm, inputs=fcm_input, outputs=[svg_preview, download_button])
 
 
 if __name__ == "__main__":
