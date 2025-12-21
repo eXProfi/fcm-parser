@@ -13,8 +13,8 @@ The data types used by the web app are documented in [fcm_format.txt].
 ## Windows quick start
 
 1. Download the project (easiest): grab the ZIP from GitHub, unzip it anywhere, and open the extracted folder.  
-   - Direct ZIP link: `https://github.com/your-username/fcm-parser/archive/refs/heads/main.zip`
-2. If you prefer Git instead of a ZIP: `git clone https://github.com/your-username/fcm-parser.git`
+   - Direct ZIP link: `https://github.com/eXProfi/fcm-parser/archive/refs/heads/main.zip`
+2. If you prefer Git instead of a ZIP: `git clone https://github.com/eXProfi/fcm-parser.git`
 3. Open the project folder in Windows Explorer or PowerShell.
 4. Run `install.bat`. It will download and install Python 3.11.9 into the project folder (if you do not have it yet), set up a virtual environment, and install everything the converter needs.
 5. Start the converter any time with `start_converter.bat`. The app will open in your default browser.
