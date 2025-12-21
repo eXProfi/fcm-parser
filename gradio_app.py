@@ -49,7 +49,7 @@ def convert_fcm(file_obj):
             f"{svg_preview}"
             "</div>"
         )
-        download_update = gr.update(value=svg_path, visible=True, interactive=True)
+        download_update = gr.update(value=svg_path, visible=True, interactive=True, variant="primary")
         return preview_html, download_update
     except Exception as exc:  # pragma: no cover - surfaced to UI
         raise gr.Error(f"Could not convert the file: {exc}")
@@ -67,22 +67,6 @@ with gr.Blocks(title="FCM → SVG") as demo:
 
         with gr.Column():
             gr.Markdown("Press **Convert** to generate the SVG, then click **Download SVG** when it's ready.")
-
-    gr.HTML(
-        """
-        <style>
-        #download-svg-btn {
-          background: #e5e7eb;
-          color: #111827;
-        }
-        #download-svg-btn:not([disabled]):not([aria-disabled="true"]) {
-          background: #22c55e;
-          color: white;
-        }
-        </style>
-        """,
-        visible=False,
-    )
 
     with gr.Row():
         convert_button = gr.Button("Convert", variant="primary")
