@@ -3,6 +3,12 @@
 This project contains my current research into writing a
 free software implementation of brother's FCM format. I only created the convenient Windows installer and the Gradio web interface; the converter itself is based on the original work by [justjanne/fcm-parser](https://github.com/justjanne/fcm-parser). Thank you to the original author for the FCM-to-SVG conversion code.
 
+## Screenshot
+
+*Web interface built with **Gradio** — upload an FCM file, preview the generated SVG, and download the result.*
+
+![FCM → SVG Converter — Gradio web interface](scr.png)
+
 The data types used by the web app are documented in [fcm_format.txt].
 
 ## Features
