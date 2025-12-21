@@ -29,8 +29,15 @@ def convert_fcm(file_obj):
         raise gr.Error("Пожалуйста, загрузите FCM файл.")
 
     try:
-        stem = Path(file_obj.name).stem or "converted"
-        svg_path, thumbnail_path = _fcm_bytes_to_files(file_obj.read(), stem)
+        stem_source = getattr(file_obj, "name", file_obj)
+        stem = Path(stem_source).stem or "converted"
+
+        if hasattr(file_obj, "read"):
+            fcm_bytes = file_obj.read()
+        else:
+            fcm_bytes = Path(file_obj).read_bytes()
+
+        svg_path, thumbnail_path = _fcm_bytes_to_files(fcm_bytes, stem)
         svg_preview = Path(svg_path).read_text(encoding="utf-8")
         preview_html = (
             '<div style="max-height: 640px; overflow: auto; border: 1px solid #ddd; padding: 8px;">'
