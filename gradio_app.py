@@ -56,18 +56,21 @@ def convert_fcm(file_obj):
 
 
 with gr.Blocks(title="FCM → SVG") as demo:
-    gr.Markdown("# FCM → SVG Converter — Upload an FCM file to create an SVG preview and downloadable outputs.")
+    gr.Markdown(
+        "# FCM → SVG Converter — "
+        "<span style='font-size: 0.9em;'>Upload an FCM file to create an SVG preview and downloadable outputs.</span>"
+    )
 
     with gr.Row():
         with gr.Column():
             fcm_input = gr.File(label="FCM file", file_types=[".fcm"])
 
         with gr.Column():
-            convert_button = gr.Button("Convert")
-            gr.Markdown("Click **Convert** after uploading to generate the SVG and preview.")
+            convert_button = gr.Button("Convert & Download SVG")
+            gr.Markdown("Click to convert your upload and immediately get the SVG download link.")
 
     gr.Markdown("## Downloads — Download the converted SVG created from your FCM file.")
-    download_svg = gr.DownloadButton(label="Download SVG", value=None, visible=False)
+    download_svg = gr.File(label="SVG file", type="filepath", visible=False)
 
     gr.Markdown("## Preview — Review the generated SVG at a scaled 1000×1000 preview before downloading.")
     svg_preview = gr.HTML(label="SVG preview")
