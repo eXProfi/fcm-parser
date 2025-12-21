@@ -49,8 +49,7 @@ def convert_fcm(file_obj):
             f"{svg_preview}"
             "</div>"
         )
-        download_update = gr.update(value=svg_path, visible=True)
-        return preview_html, download_update
+        return preview_html, svg_path
     except Exception as exc:  # pragma: no cover - surfaced to UI
         raise gr.Error(f"Could not convert the file: {exc}")
 
